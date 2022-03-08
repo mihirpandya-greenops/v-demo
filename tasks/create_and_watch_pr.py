@@ -16,28 +16,6 @@ newFile = '''
 #     ports:
 #     - containerPort: 80
 # ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: testapp
-spec:
-  replicas: 1
-  revisionHistoryLimit: 3
-  selector:
-    matchLabels:
-      app: testapp
-  template:
-    metadata:
-      labels:
-        app: testapp
-    spec:
-      containers:
-      - image: docker.io/1mihirpandya/testapp:latest
-        name: testapp
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 5000
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -48,6 +26,36 @@ spec:
     targetPort: 5000
   selector:
     app: testapp
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: testapp
+spec:
+  selector:
+    matchLabels:
+      app: testapp
+  template:
+    metadata:
+      labels:
+        app: testapp
+    spec:
+      containers:
+      - name: testapp
+        image: docker.io/1mihirpandya/testapp
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+  strategy:
+    canary:
+      steps:
+      - setWeight: 25
+      - pause: {duration: 5s}
+      - setWeight: 50
+      - pause: {duration: 5s}
+      - setWeight: 75
+      - pause: {duration: 5s}
+      - setWeight: 100
 '''
 
 source = "main"
