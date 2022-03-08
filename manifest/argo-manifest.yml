@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: testapp
-        image: docker.io/1mihirpandya/testapp:latest
+        image: docker.io/1mihirpandya/testapp
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
