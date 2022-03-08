@@ -36,10 +36,10 @@ steps:
 - name: deploy_to_staging
   application_path: testapp_staging.yml
   tests:
-  - path: tasks/smoke_test.py
+  - path: tasks/smoke_test.sh
     type: inject
-    image: python:latest
-    commands: [python, smoke_test.py]
+    image: curlimages/curl:latest
+    commands: [sh, -c, ./smoke_test.sh]
     before: false
     variables:
       - name: SERVICE_INTERNAL_URL
@@ -50,10 +50,10 @@ steps:
   application_path: testapp_prod.yml
   rollback_limit: 1
   tests:
-  - path: tasks/smoke_test.py
+  - path: tasks/smoke_test.sh
     type: inject
-    image: python:latest
-    commands: [python, smoke_test.py]
+    image: curlimages/curl:latest
+    commands: [sh, -c, ./smoke_test.sh]
     before: false
     variables:
       - name: SERVICE_INTERNAL_URL
