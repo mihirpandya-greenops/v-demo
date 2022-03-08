@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: testapp-prod
+  namespace: argocd
+  annotations:
+    atlas-argo-sync-prune: "true"
+spec:
+  destination:
+    namespace: prod
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifest
+    targetRevision: main
+    repoURL: https://github.com/mihirpandya-greenops/verkada-demo.git
