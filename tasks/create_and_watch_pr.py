@@ -33,6 +33,7 @@ kind: Rollout
 metadata:
   name: testapp
 spec:
+  replicas: 5
   selector:
     matchLabels:
       app: testapp
