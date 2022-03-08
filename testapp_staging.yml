@@ -7,7 +7,7 @@ metadata:
     atlas-argo-sync-prune: "true"
 spec:
   destination:
-    namespace: staging
+    namespace: stag
     server: https://kubernetes.default.svc
   project: default
   source:
