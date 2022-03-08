@@ -64,6 +64,7 @@ letters = string.ascii_lowercase
 new_branch = "test-" + ''.join(random.choice(letters) for i in range(10))
 
 token = os.getenv('GITHUB_TOKEN')
+print(token)
 g = Github(token)
 repo = g.get_repo("mihirpandya-greenops/verkada-demo")
 sb = repo.get_branch(source)
