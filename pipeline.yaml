@@ -2,8 +2,8 @@ name: demo_pipeline
 argo_version_lock: true
 cluster_name: in-cluster
 steps:
-- name: build_and_release
-  tests:
+# - name: build_and_release
+#   tests:
 #   - path: tasks/run_jenkins_job.py
 #     type: inject
 #     image: python:latest
