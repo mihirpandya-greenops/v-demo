@@ -43,7 +43,7 @@ steps:
     before: false
     variables:
       - name: SERVICE_INTERNAL_URL
-        value: testapp.staging.svc.cluster.local
+        value: testapp.stag.svc.cluster.local
   dependencies:
   - build_and_release
 - name: deploy_to_prod
