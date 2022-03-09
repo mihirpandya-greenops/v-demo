@@ -1,6 +1,6 @@
 #!/bin/sh
 sleep 15
-if [ "$SERVICE_INTERNAL_URL" == "testapp.prod-2.svc.cluster.local" ]; then
+if [ "$SERVICE_INTERNAL_URL" == "testapp.prod.svc.cluster.local" ]; then
    echo "Test failed"
    exit 1;
 fi
