@@ -2,34 +2,34 @@ name: demo_pipeline
 argo_version_lock: true
 cluster_name: in-cluster
 steps:
-# - name: build_and_release
-#   tests:
-#   - path: tasks/run_jenkins_job.py
-#     type: inject
-#     image: python:latest
-#     commands: [/bin/bash, -c, pip install python-jenkins && python run_jenkins_job.py]
-#     before: false
-#     variables:
-#       - name: JENKINS_URL
-#         value: http://jenkins.jenkins.svc.cluster.local:8080
-#       - name: JOB_NAME
-#         value: test
-#       - name: JENKINS_PASSWORD
-#         valueFrom:
-#           secretKeyRef:
-#             name: jenkins-token-secret
-#             key: password
-#   - path: tasks/create_and_watch_pr.py
-#     type: inject
-#     image: python:latest
-#     commands: [/bin/bash, -c, pip install pip install PyGithub && python create_and_watch_pr.py]
-#     before: false
-#     variables:
-#       - name: GITHUB_TOKEN
-#         valueFrom:
-#           secretKeyRef:
-#             name: github-pat
-#             key: token
+- name: build_and_release
+  tests:
+  - path: tasks/run_jenkins_job.py
+    type: inject
+    image: python:latest
+    commands: [/bin/bash, -c, pip install python-jenkins && python run_jenkins_job.py]
+    before: false
+    variables:
+      - name: JENKINS_URL
+        value: http://jenkins.jenkins.svc.cluster.local:8080
+      - name: JOB_NAME
+        value: test
+      - name: JENKINS_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: jenkins-token-secret
+            key: password
+  - path: tasks/create_and_watch_pr.py
+    type: inject
+    image: python:latest
+    commands: [/bin/bash, -c, pip install pip install PyGithub && python create_and_watch_pr.py]
+    before: false
+    variables:
+      - name: GITHUB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: github-pat
+            key: token
   # Any number of additional tasks & tests can be added. Java, Python, bash scripts, or containers can be run.
   # Infrastructure can also be managed as a part of the pipeline.
   # Terraform steps, Ansible steps, or Istio can be added as a part of the pipeline.
@@ -44,8 +44,8 @@ steps:
     variables:
       - name: SERVICE_INTERNAL_URL
         value: testapp.stag.svc.cluster.local
-#   dependencies:
-#   - build_and_release
+  dependencies:
+  - build_and_release
 - name: deploy_to_prod
   application_path: testapp_prod.yml
   rollback_limit: 1
