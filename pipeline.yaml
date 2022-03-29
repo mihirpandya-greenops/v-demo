@@ -2,7 +2,7 @@ name: demo_pipeline
 argo_version_lock: true
 cluster_name: in-cluster
 steps:
-- name: build_and_release
+- name: build
   tests:
   - path: tasks/run_jenkins_job.py
     type: inject
@@ -19,6 +19,8 @@ steps:
           secretKeyRef:
             name: jenkins-token-secret
             key: password
+- name: release
+  tests: 
   - path: tasks/create_and_watch_pr.py
     type: inject
     image: python:latest
@@ -30,6 +32,8 @@ steps:
           secretKeyRef:
             name: github-pat
             key: token
+  dependencies:
+  - build
   # Any number of additional tasks & tests can be added. Java, Python, bash scripts, or containers can be run.
   # Infrastructure can also be managed as a part of the pipeline.
   # Terraform steps, Ansible steps, or Istio can be added as a part of the pipeline.
@@ -45,7 +49,7 @@ steps:
       - name: SERVICE_INTERNAL_URL
         value: testapp.stag.svc.cluster.local
   dependencies:
-  - build_and_release
+  - release
 - name: deploy_to_prod
   application_path: testapp_prod.yml
   rollback_limit: 1
